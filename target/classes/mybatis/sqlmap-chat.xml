@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chatDao">
+
+       <!--  채팅전송후 chatnum반환-->
+        <insert id="insertChatOne" parameterType="HashMap">
+            insert into CHAT(USERCODE, CHATNUM, FROMCODE, TOCODE, CHATCONTENT, CHATTIME, READCHECK)
+            VALUES (#{userCode}, C_SEQ.nextval, #{fromCode}, #{toCode}, #{chatContent}, sysdate, 1)
+        </insert> 
+        
+        <select id="selectChatOne" parameterType="HashMap" resultType="chatVo">
+        	SELECT USERCODE, CHATNUM, FROMCODE, TOCODE, CHATCONTENT, to_char(CHATTIME, 'HH24:MI') as CHATTIME, READCHECK 
+        	FROM CHAT 
+			WHERE (FROMCODE = #{fromCode} and TOCODE = #{toCode}) and 
+            CHATNUM = (select MAX(CHATNUM) FROM CHAT WHERE (USERCODE=#{fromCode} and FROMCODE = #{fromCode} and TOCODE = #{toCode}))
+        </select>
+ 
+               
+    	<!-- 읽음처리-->
+        <update id="updateReadCheck" parameterType="HashMap">
+        	UPDATE CHAT SET READCHECK = 0 
+        	WHERE (FROMCODE = #{fromCode} and TOCODE = #{toCode})
+        </update>
+        
+        <!--  상대방과의 1:1채팅 내역 가져오기--> 
+        <select id="selectOneChatList" parameterType="HashMap" resultType="chatVo">
+			SELECT USERCODE, CHATNUM, FROMCODE, TOCODE, CHATCONTENT, to_char(CHATTIME, 'HH24:MI') as CHATTIME, READCHECK 
+			FROM CHAT 
+			WHERE USERCODE=#{userCode} and ((FROMCODE = #{userCode} and TOCODE = #{toCode}) or (FROMCODE = #{toCode} and TOCODE = #{userCode}))
+       		ORDER BY CHATTIME
+       	</select>
+        
+        <!--  안읽은 채팅 총 갯수-->
+        <select id="selectAllReadCount">
+             select count(*) from CHAT where USERCODE=#{toCode} and TOCODE = #{toCode} and READCHECK = 1
+        </select>
+        
+        <!--  개별 안읽은 채팅 총 갯수-->
+        <select id="selectReadCount" parameterType="HashMap"  resultType="int">
+             select count(*) from CHAT where USERCODE=#{toCode} and FROMCODE = #{fromCode} and TOCODE = #{toCode} and READCHECK = 1
+        </select>
+        
+        <!--  채팅 목록 가장 마지막 대화만 -->
+        <select id="selectAllChatList" parameterType="HashMap" resultType="chatVo">
+		 	SELECT USERCODE, CHATNUM, FROMCODE, TOCODE, CHATCONTENT, to_char(CHATTIME,'YYYY/MM/DD HH24:MI:SS') as CHATTIME, READCHECK
+		 	FROM CHAT 
+		 	WHERE CHATNUM in (select max(CHATNUM) from CHAT where USERCODE = #{userCode} and (FROMCODE = #{userCode} or TOCODE = #{userCode}) group by FROMCODE, TOCODE)
+        </select>
+ 
+ 		<delete id="deleteChat" parameterType="HashMap">
+ 			DELETE FROM "CHAT" WHERE USERCODE = #{fromCode} AND ((FROMCODE = #{fromCode} and TOCODE = #{toCode}) or (FROMCODE = #{toCode} and TOCODE = #{fromCode}))
+ 		</delete>
+ 		
+ 		
+ 		<!--매칭하기 (사장님 게시글 가져오기)  -->
+ 		<select id="selectEb" parameterType="String" resultType="employerBoardVO">
+			SELECT
+           "EBCODE","WRITERCOCE","TITLE", to_char("RGEDATE", 'YYYY/MM/DD') as "RGEDATE", "ADDRESS",
+		   to_char("START", 'YYYY/MM/DD') as "START", to_char("END", 'YYYY/MM/DD') as "END","WORKTIME",
+		   "SALARY", "JOB","AGE", "CONTENT", to_char("DEADLINE", 'YYYY/MM/DD') as "DEADLINE",
+		   "COUNT","TIMEOVER","MATCHING" 
+		   FROM EB
+		   WHERE "WRITERCOCE" = #{writerCode} and "MATCHING" = 'N' and ("DEADLINE"+7) >= sysdate
+           
+        </select>
+		
+		
+		<!--매칭하기 테이블에 smscheck가 N인지 Y인지 알기 //만들어야함!!!!!!!!-->
+		<select id="selectSmsCheck" parameterType="String"  resultType="String">
+             select SMSCHECK from SUBUSER where USERCODE=#{employerCode}
+        </select>
+		
+		<!--매칭하기(매칭 넣기)-->
+		<insert id="insertMatching" parameterType="HashMap">
+            insert into MATCHING(MATCHINGCODE, EMPLOYERCODE, EMPLOYEECODE, EBCODE, MATCHINGDATE, CFCHECK, GROUPID)
+            VALUES (MATCHING_SEQ.nextval, #{employerCode}, #{employeeCode}, #{ebCode}, sysdate, 'N', #{groupID})
+        </insert> 
+		
+		
+<!-- 	일정추가용	
+		<select id="selectEeMatching" parameterType="String" resultType=" CalendarAddDto">
+   			select  m.EMPLOYEECODE as "USERCODE", e.TITLE as "SCHEDULENAME", e.CONTENT as "CONTENTS", to_char("START",'YYYY/MM/DD') as "STARTDATE",  to_char("END",'YYYY/MM/DD') as "ENDDATE"
+   			from MATCHING m join "EB" e on(e.EBCODE = m.EBCODE)
+        	where m.EBCODE = #{ebCode};
+        </select>	 -->
+</mapper>

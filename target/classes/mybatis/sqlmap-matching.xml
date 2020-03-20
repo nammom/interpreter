@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="matchingDao">
+        	<!-- //내가 사장님일때 매칭 리스트 가져오기   -->
+       	<select id="selectErMatching" resultType="MatchingVo">
+   			   select m.MATCHINGCODE, m.EMPLOYERCODE, m.EMPLOYEECODE, m.EBCODE, e.TITLE, to_char(m.MATCHINGDATE,'YYYY/MM/DD') as MATCHINGDATE, m.CFCHECK, m.GROUPID, NVL(r.REVIEWCODE,'null') as "REVIEWCODE"
+   				from MATCHING m join EB e on m.EBCODE = e.EBCODE 
+   				left join REVIEW r on( m.MATCHINGCODE = r.MATCHINGCODE and m.EMPLOYERCODE = r.REVIEWERCODE)where m.EMPLOYERCODE = #{myUserCode}
+        </select>
+        
+		<!-- 	//내가 알바생일때 매칭 리스트 가져오기 -->
+		<select id="selectEeMatching" resultType="MatchingVo">
+   			   select m.MATCHINGCODE, m.EMPLOYERCODE, m.EMPLOYEECODE, m.EBCODE, e.TITLE, to_char(m.MATCHINGDATE,'YYYY/MM/DD') as MATCHINGDATE, m.CFCHECK, m.GROUPID, NVL(r.REVIEWCODE,'null') as "REVIEWCODE"
+   				from MATCHING m join EB e on m.EBCODE = e.EBCODE 
+   				left join REVIEW r on( m.MATCHINGCODE = r.MATCHINGCODE  and m.EMPLOYEECODE = r.REVIEWERCODE) where m.EMPLOYEECODE = #{myUserCode}
+        </select>	
+        
+		<!-- 	//매칭취소시 삭제  -->
+		<delete id="deleteMatching">
+ 			DELETE FROM "MATCHING" WHERE MATCHINGCODE = #{matchingCode}
+ 		</delete>
+ 		
+ 		<!--  //매칭 취소시 해당 게시글 매칭여부 N으로 변경-->
+ 		<update id="updateMatchingCheck">
+        	UPDATE EB SET MATCHING = 'N' WHERE EBCODE = #{ebCode}
+        </update>
+        
+		<!-- //SUB회원관리 문자 알림 off => on : SMSCHECK 데이터 Y로 바꾸기,  -->
+		<!-- //SUB회원관리 문자 알림 off => on : , SMSCHECK 데이터 N로 바꾸기-->
+		<update id="updateSmsCheck" parameterType="HashMap">
+        	UPDATE SUBUSER SET SMSCHECK = #{smsCheck} WHERE USERCODE = #{myUserCode}
+        </update>
+      	
+      	<!-- 예약 문자전송하기 + groupID 컬럼에 아이디값추가,  --> 		 
+        <update id="updateGroupId" parameterType="HashMap">
+        	UPDATE MATCHING SET GROUPID = #{groupId} WHERE  MATCHINGCODE = #{matchingCode}
+        </update>
+        
+        <!-- 예약 문자취소하기+ groupID 컬럼에 null로 추가  -->  
+        <update id="updateGroupIdNull">
+        	UPDATE MATCHING SET GROUPID = 'null' WHERE  EMPLOYEECODE = #{myUserCode}
+        </update>
+        
+   		<select id="selectNullMatching" resultType="MatchingVo">
+        	select m.MATCHINGCODE, m.EMPLOYERCODE, m.EMPLOYEECODE, m.EBCODE, to_char("START",'YYYY/MM/DD') as "MATCHINGDATE", m.CFCHECK, m.GROUPID
+   			from MATCHING m join "EB" e on(e.EBCODE = m.EBCODE)
+        	where m.EMPLOYEECODE = #{myUserCode} and m.GROUPID = 'null' and ("START"-2) >= sysdate
+        </select>
+        
+        <select id="selectGroupIdMatching" resultType="MatchingVo">
+        	select m.MATCHINGCODE, m.EMPLOYERCODE, m.EMPLOYEECODE, m.EBCODE, to_char(MATCHINGDATE,'YYYY/MM/DD') as MATCHINGDATE, m.CFCHECK, m.GROUPID
+   			from MATCHING m join "EB" e on(e.EBCODE = m.EBCODE)
+   			where EMPLOYEECODE = #{myUserCode} and GROUPID != 'null' and "START" >= sysdate
+        </select>     	
+		
+		<!--Sms이용, 전화번호 알아오기 -->
+		<select id="selectPhone" parameterType="String"  resultType="String">
+             select PHONE from "USER" where USERCODE=#{userCode}
+        </select>
+		
+		<!-- 인증 1올리기 -->
+		<update id="updateCf" parameterType="String">
+        	UPDATE SUBUSER SET CFCOUNT = CFCOUNT+1 WHERE  USERCODE = #{targetCode}
+        </update>
+        
+        <update id="updateCfCheck" parameterType="String">
+        	UPDATE MATCHING SET CFCHECK = 'Y' WHERE  MATCHINGCODE = #{matchingCode}
+        </update>
+        
+
+		<!-- 리뷰넣기 -->
+		<insert id="insertReview" parameterType="ReviewVo">
+		 	insert into REVIEW(REVIEWCODE, MATCHINGCODE,  CATEGORY, REVIEWERCODE, TARGETCODE, STAR, CONTENTS)
+            VALUES (REVIEW_SEQ.nextval, #{matchingCode}, #{category}, #{reviewerCode}, #{targetCode}, #{star}, #{contents})
+		</insert>	
+		
+		<!--포인트주기  -->
+		<update id="updatePoint" parameterType="String">
+        	UPDATE SUBUSER SET POINT = POINT + 100  WHERE  USERCODE = #{userCode}
+        </update>
+		
+		<select id="selectGroupId" resultType="String">
+        	select GROUPID from MATCHING where MATCHINGCODE = #{matchingCode}
+        </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adverDao">
+        	<!-- //광고게시글 뽑아오기  -->
+       	<select id="selectErAd" parameterType="String" resultType="AdverVo">
+   			<![CDATA[select p.USERCODE, p.Link, p.TITLE, e.ADDRESS, e.SALARY
+			from AD a join ADAPPLICATION p on(a.ADAPPNO = p.ADAPPNO)
+			join "EB" e on(p.Link = e.EBCODE)
+			where a."START" <= sysdate and a."END" >= sysdate and a.ADCATEGORY = 'employer'
+			order by a.REGDATE desc]]>
+        </select>
+        
+        <select id="selectEeAd" parameterType="String" resultType="AdverVo">
+   			<![CDATA[select p.USERCODE, p.Link, p.TITLE, e.ADDRESS, e.SALARY
+			from AD a join ADAPPLICATION p on(a.ADAPPNO = p.ADAPPNO)
+			join "WB" e on(p.Link = e.WBCODE)
+			where a."START" <= sysdate and a."END" >= sysdate and a.ADCATEGORY = 'employee'
+			order by a.REGDATE desc]]>
+        </select>
+        
+        <select id="selectCad" parameterType="String" resultType="AdverVo">
+   			<![CDATA[select p.ENTERPRISE, p.Link, p.IMAGE
+			from AD a join ADAPPLICATION p on(a.ADAPPNO = p.ADAPPNO)
+			where a."START" <= sysdate and a."END" >= sysdate and a.ADCATEGORY = 'company'
+			order by a.REGDATE desc]]>
+        </select>
+
+		<!-- 	//광고신청서 저장-->
+		
+		<select id="selectPoint" parameterType="String" resultType="int">
+   			select POINT from SUBUSER where USERCODE = #{userCode}
+        </select>
+        
+        <update id="updateAdPoint" parameterType="String">
+        	update SUBUSER set POINT = POINT - 300 where USERCODE = #{userCode}
+        </update>
+        
+		<insert id="insertAdApp" parameterType="AdverAppVo">
+		 	INSERT INTO ADAPPLICATION
+            VALUES 
+            (ADAPP_SEQ.nextval, #{userCode}, #{enterprise}, #{image},
+            #{adcategory}, #{adDate}, #{link}, #{title}, #{content}, #{phone}, #{email}, sysdate)
+		</insert>	
+</mapper>

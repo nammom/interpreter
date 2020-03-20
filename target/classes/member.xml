@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	
+	<!--웹소켓설정 시작  -->
+	<websocket:handlers>
+    	<websocket:mapping handler="echoHandler" path="/echo"/>
+        <!-- WebSocket Handshake : 웹소켓 핸들러 클래스(echoHandler)가 호출되기전에 HttpSession에 접속하여  -->
+        <!-- '이용자 아이디를 추출하는 기능' 등을 인터셉터가 수행하도록 설정 -->
+        <websocket:handshake-interceptors>
+			<bean class="chatMatching.controller.HandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+       		<!-- <websocket:sockjs /> -->
+    </websocket:handlers>
+    
+
+    
+    <bean id="echoHandler" class="chatMatching.controller.EchoHandler" >
+		<property name="chatService" ref="chatService"/>
+    </bean>
+     
+     
+    <!--mybatis 시작  -->
+ 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl"
+			value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="user" value="hi" />
+		<property name="password" value="hi" />
+		<property name="maxPoolSize" value="100" />
+		<property name="maxIdleTime" value="600" />
+		<property name="idleConnectionTestPeriod" value="300" />
+	</bean>
+	
+	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis/mybatis-config.xml" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:mybatis/sqlmap-chat.xml</value>
+				<value>classpath:mybatis/sqlmap-matching.xml</value>
+				<value>classpath:mybatis/sqlmap-myBlogErEe.xml</value>
+				<value>classpath:mybatis/sqlmap-ranking.xml	</value>	
+				<value>classpath:mybatis/sqlmap-adver.xml	</value>			
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+
+	
+	<!--  채팅 + 매칭하기 + 길찾기-->	
+	<bean id="ChatDao" class="chatMatching.spring.ChatDao">
+		<constructor-arg ref="sqlSessionTemplate" />
+	</bean>
+
+	<bean id="chatService" class="chatMatching.spring.ChatService">
+		<constructor-arg ref="ChatDao" />
+	</bean>
+	
+	<!--  매칭관리-->	
+	<bean id="MatchingDao" class="chatMatching.spring.MatchingDaoImpl">
+		<constructor-arg ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean id="matchingService" class="chatMatching.spring.MatchingServiceImpl">
+		<constructor-arg ref="MatchingDao" />
+		<property name="smsService" ref="smsService" />
+	</bean>
+	
+	<!--  문자전송-->
+	<bean id="smsService" class="chatMatching.spring.SmsServiceImpl">
+		<constructor-arg ref="MatchingDao" />
+	</bean>
+	
+	<!--마이블로그 _ 사장님탭, 알바생탭  -->
+	<bean id="myBlogErEeDao" class="myBlogErEe.spring.MyBlogErEeDaoImpl">
+		<constructor-arg ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean id="myBlogErEeService" class="myBlogErEe.spring.MyBlogErEeServiceImpl">
+		<constructor-arg ref="myBlogErEeDao" />
+	</bean>
+	
+	<!--랭킹 -->
+	<bean id="rankingDao" class="ranking.spring.RankingDaoImpl">
+		<constructor-arg ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean id="rankingService" class="ranking.spring.RankingServiceImpl">
+		<constructor-arg ref="rankingDao" />
+	</bean>
+	
+	<!--  광고신청, 광고보기-->
+   	<bean id="adverDao" class="advertisement.spring.AdverDaoImpl">
+		<constructor-arg ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean id="adverService" class="advertisement.spring.AdverServiceImpl">
+		<constructor-arg ref="adverDao" />
+	</bean>
+	
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+            
+	<context:component-scan base-package="chatMatching.spring" />
+
+</beans>

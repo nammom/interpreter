@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 마이바티스 작동 규칙 정의 -->
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="ChatVo" type="chatMatching.vo.ChatVo" />
+		<typeAlias alias="employerBoardVO" type="chatMatching.vo.EmployerBoardVO" />
+		<typeAlias alias="MatchingVo" type="chatMatching.vo.MatchingVo" />
+		<typeAlias alias="ReviewVo" type="chatMatching.vo.ReviewVo" />
+		<typeAlias alias="SubUserVo" type="chatMatching.vo.SubUserVo" />
+		<typeAlias alias="IntroductionVo" type="myBlogErEe.vo.IntroductionVo" />
+		<typeAlias alias="CareerVo" type="myBlogErEe.vo.CareerVo" />
+		<typeAlias alias="RankingVo" type="ranking.vo.RankingVo" />
+		<typeAlias alias="AdverVo" type="advertisement.vo.AdverVo" />
+		<typeAlias alias="AdverAppVo" type="advertisement.vo.AdverAppVo" />
+	</typeAliases>
+	
+</configuration>

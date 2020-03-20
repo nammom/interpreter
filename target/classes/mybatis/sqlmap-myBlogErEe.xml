@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myBlogErEeDao">
+
+        <!--  사장님, 알바생 리뷰 가져오기-->	
+       	<select id="selectReview" parameterType="HashMap" resultType="ReviewVo">
+   			   select * from REVIEW where TARGETCODE =  #{myuserCode} and CATEGORY = #{category}
+        </select>
+        
+        <!-- 카테고리 사장님, 알바생 평균별점 가져오기 -->	
+		<select id="selectAvgStar" parameterType="HashMap" resultType="int">
+   			   select NVL(avg(STAR), 0) from REVIEW where TARGETCODE =  #{myuserCode} and CATEGORY = #{category} 
+        </select>	
+        
+        
+        <!-- //카테고리 사장님 or알바생  소개서 가져오기   -->
+        <select id="selectIntroduction" parameterType="HashMap"  resultType="IntroductionVo">
+             select * from INTRODUCTION where  USERCODE= #{myuserCode}  and  CATEGORY = #{category}
+        </select>
+        
+        <!--알바생 소개서의 경력사항 가져오기  -->
+        <select id="selectCareer" parameterType="String"  resultType="CareerVo">
+             select INTRODUCTIONCODE, COMPANY, 
+             to_char(STARTDATE, 'YYYY-MM-DD') as STARTDATE,to_char(ENDDATE, 'YYYY-MM-DD') as ENDDATE
+             from CAREER where INTRODUCTIONCODE= #{introductionCode}
+        </select>
+        
+        <!--SubUser의 모든 컬럼 값 가져오기  -->
+		<select id="selectSubUser" parameterType="String"  resultType="SubUserVo">
+ 			select * from SUBUSER where USERCODE= #{myuserCode}
+ 		</select>
+ 		
+</mapper>
