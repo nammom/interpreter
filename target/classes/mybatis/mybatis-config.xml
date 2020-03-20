@@ -20,6 +20,7 @@
 		<typeAlias alias="RankingVo" type="ranking.vo.RankingVo" />
 		<typeAlias alias="AdverVo" type="advertisement.vo.AdverVo" />
 		<typeAlias alias="AdverAppVo" type="advertisement.vo.AdverAppVo" />
+		<typeAlias alias="Member" type="join.member.Member" />
 	</typeAliases>
 	
 </configuration>

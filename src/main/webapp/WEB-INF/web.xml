@@ -24,6 +24,8 @@
     <init-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>
+				classpath:settingInterSexy/member.xml
+				classpath:settingInterSexy/controller.xml
 				classpath:member.xml
 				classpath:controller.xml
 				classpath:mvc.xml

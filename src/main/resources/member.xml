@@ -40,8 +40,8 @@
 			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl"
 			value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="user" value="hi" />
-		<property name="password" value="hi" />
+		<property name="user" value="hj" />
+		<property name="password" value="hj" />
 		<property name="maxPoolSize" value="100" />
 		<property name="maxIdleTime" value="600" />
 		<property name="idleConnectionTestPeriod" value="300" />
@@ -65,7 +65,8 @@
 				<value>classpath:mybatis/sqlmap-matching.xml</value>
 				<value>classpath:mybatis/sqlmap-myBlogErEe.xml</value>
 				<value>classpath:mybatis/sqlmap-ranking.xml	</value>	
-				<value>classpath:mybatis/sqlmap-adver.xml	</value>			
+				<value>classpath:mybatis/sqlmap-adver.xml	</value>
+				<value>classpath:joinConfig/sqlmap-member.xml</value>			
 			</list>
 		</property>
 	</bean>

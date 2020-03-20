@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="JoinDao">
+ 	<select id="emailSelect" resultType="Member" parameterType="String" >
+ 		select * from "USER" where email=#{value}
+ 	</select>
+ 	<select id="usercodeCheck" resultType="Member" parameterType="String">
+ 		select * from "USER" where usercode=#{value}
+ 	</select>
+ 	<select id="phoneSelect" resultType="Member" parameterType="String">
+ 		select * from "USER" where phone=#{value}
+ 	</select>
+ 	<insert id="userInsert" parameterType="Member">
+ 		insert into "USER" values(#{usercode},#{email},#{password},to_date(#{birthdate},'yyyy-MM-dd'),#{phone},sysdate)
+ 	</insert>
+ 	<update id="updateInfo" parameterType="Member">
+ 		update "USER" set USERCODE=#{usercode},BIRTHDATE=to_date(#{birthdate},'yyyy-MM-dd'),
+ 		PHONE=#{phone} where email=#{email}
+ 	</update>
+ 	<update id="updatePwd" parameterType="HashMap">
+ 		update "USER" set password=#{newPassword} where email=#{email}
+ 	</update>
+</mapper>
+
