@@ -144,8 +144,7 @@ public class JoinController {
 	@RequestMapping(value="/join/send", method=RequestMethod.POST, produces = "text/json;charset=UTF-8" )
 	@ResponseBody
 	public String sendSms(@RequestBody String phone, HttpSession session) {
-									//최대값,최소값
-		int num = (int)(Math.random()*9999)+1000;
+		int num = (int)(Math.random()*10000)+1;
 		
 		String random = Integer.toString(num);
 		System.out.println("요청한 폰번호: " + phone+ ", 발송된 인증버노:" + random);
@@ -157,15 +156,14 @@ public class JoinController {
 		return "인증번호가 발송되었습니다.";
 	}
 	
-	//발송된 인증번호 검사
-	@RequestMapping(value="/join/CheckRan", method=RequestMethod.POST)
+	//발송된 인증번호 검사(휴대폰으로 인증번호 발송)
+	@RequestMapping(value="/join/CheckRanPhone", method=RequestMethod.POST)
 	@ResponseBody
-	public String CheckRan(@RequestBody String userRan, HttpSession session) {
+	public String CheckRanPhone(@RequestBody String userRan, HttpSession session) {
 		//사용자가 입력한 인증번호와 세션에 저장된 발송된 인증번호 비교
 		System.out.println("사용자가 입력한 인증번호:"+userRan);
 		if(userRan.equals(session.getAttribute("random"))) {
 			String phone =(String)session.getAttribute("phone");
-			System.out.println(phone);
 			Member member = service.selectUser("휴대폰번호", (String)session.getAttribute("phone"));
 			session.setAttribute("myEmail", member.getEmail());
 			return "0";
@@ -174,6 +172,22 @@ public class JoinController {
 		}
 		
 	}
+	
+	//발송된 인증번호 검사(이메일으로 인증번호 발송)
+		@RequestMapping(value="/join/CheckRanEmail", method=RequestMethod.POST)
+		@ResponseBody
+		public String CheckRanEmail(@RequestBody String userRan, HttpSession session) {
+			//사용자가 입력한 인증번호와 세션에 저장된 발송된 인증번호 비교
+			System.out.println("사용자가 입력한 인증번호:"+userRan);
+			System.out.println("세션저장:"+session.getAttribute("random"));
+			if(userRan.equals(session.getAttribute("random"))) {
+				return "0";
+			}else {
+				System.out.println("리턴1");
+				return "1";
+			}
+			
+		}
 	
 	//회원가입페이지에서 입력한 값 전달받음
 	@RequestMapping(value="/join/step3", method=RequestMethod.POST)

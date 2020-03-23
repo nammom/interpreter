@@ -9,7 +9,7 @@
 <script>var contextPath = "${pageContext.request.contextPath}";</script>
 </head>
 <body>
-
+<jsp:include page="mypageMain.jsp" flush="true"/>
 <form action="updateInfo" method="POST" onsubmit="return updateInfo();">
 	개인정보 수정
 	<br><br>
@@ -49,8 +49,6 @@
 	<br><br>
 	<input type="submit" id="updateInfoBtn" value="정보수정">
 	<input type="hidden" name="phone" value="${member.phone}">
-	
-	<input type="button" id="up" value="버튼">
 
 </form>
 <script src="${pageContext.request.contextPath}/js/mypage.js" charset="UTF-8"></script>

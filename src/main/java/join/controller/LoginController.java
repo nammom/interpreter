@@ -59,6 +59,12 @@ public class LoginController {
 		return "login/searchPwd";
 	}
 	
+	@RequestMapping(value="/login/searchPwdComplite", method=RequestMethod.GET)
+	public String searchPwdComplite() {
+		return "login/searchPwdComplite";
+	}
+	
+	
 	//아이디 & 비밀번호 찾기
 	@RequestMapping(value="/login/searchEmailPwd", method=RequestMethod.GET)
 	public String searchEmailPwd() {

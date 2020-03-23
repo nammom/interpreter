@@ -10,6 +10,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SendEmailController {
 	
 	@RequestMapping(value="/login/sendEmail", method=RequestMethod.POST)
-	public void sendEmail(@RequestBody String userEamil) {
+	public void sendEmail(@RequestBody String userEamil, HttpSession sess) {
 		System.out.println("data옴"+userEamil);
 		//보내는 사람 메일 설정 
 		String host = "smtp.naver.com";
 		final String user = "ghsodb";  		
-		final String password = "rlap0814";
+		final String password = "**rlap0814";
 		final String userEmail = "ghsodb@naver.com";
 		int port = 465;
 		
@@ -63,7 +64,12 @@ public class SendEmailController {
 		   message.setSubject("메일제목");
 		   
 		   // 메일내용
-		   message.setText("메일내용");
+		   int num = (int)(Math.random()*100000)+1;
+		   String random = Integer.toString(num);
+		   
+		   sess.setAttribute("random", random);
+		   
+		   message.setText("인증번호 : "+random+" 을 입력해주세요.");
 
 		   //메일 메세지를 MTA로 전송하는 기능을 하는 클래스 
 		   Transport.send(message);

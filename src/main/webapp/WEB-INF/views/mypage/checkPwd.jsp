@@ -9,6 +9,7 @@
 <script>var contextPath = "${pageContext.request.contextPath}";</script>
 </head>
 <body>
+<jsp:include page="mypageMain.jsp" flush="true"/>
 비밀번호
 <input type="password" id="password">
 <br><br>

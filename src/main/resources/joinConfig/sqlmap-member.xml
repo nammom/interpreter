@@ -22,5 +22,8 @@
  	<update id="updatePwd" parameterType="HashMap">
  		update "USER" set password=#{newPassword} where email=#{email}
  	</update>
+ 	<delete id="deleteAccount" parameterType="String">
+ 		delete "USER" where EMAIL=#{value}
+ 	</delete>
 </mapper>
 

@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>정보수정 완료</title>
+<title>나의 1:1문의</title>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script>var contextPath = "${pageContext.request.contextPath}";</script>
 </head>
 <body>
 <jsp:include page="mypageMain.jsp" flush="true"/>
-회원 정보가 정상적으로 수정 되었습니다. <br><br>
-
-<input type="button" value="확인" onclick="location.href ='${pageContext.request.contextPath}/mypage/updateInfo'">
+<fieldset>
+<legend>나의 1:1문의</legend>
+</fieldset>
 </body>
 </html>

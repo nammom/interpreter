@@ -16,6 +16,8 @@
 	<br>
 	<input type="text" id="sendCheck" placeholder="인증번호 입력" >
 	<input type="checkbox" id="emailConfirm" style="display:none">
+	
+	<input type="button" id="SearchPwd" value="다음>">
 
 <script src="${pageContext.request.contextPath}/js/join.js" charset="UTF-8"></script>
 <script src="${pageContext.request.contextPath}/js/login.js" charset="UTF-8"></script>

@@ -47,4 +47,9 @@ public class JoinDao {
 		sqlSessionTemplate.update("updatePwd",map);
 	}
 	
+	//회원 delete
+	public void deleteAccout(String email) {
+		sqlSessionTemplate.delete("deleteAccount", email);
+	}
+	
 }

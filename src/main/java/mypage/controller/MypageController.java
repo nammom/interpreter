@@ -62,7 +62,7 @@ public class MypageController {
 	public String updateInfo(Member member,HttpSession session) {
 		member.setEmail((String)session.getAttribute("myEmail"));
 		mypageService.updateInfo(member);
-		return "mypage/updateComplite";
+		return "mypage/updateInfoComplite";
 	}
 	
 	//비밀번호 변경 페이지
@@ -106,4 +106,51 @@ public class MypageController {
 	public String updatePwdComplite() {
 		return "mypage/updatePwdComplite"; 
 	}
+	
+	//회원 탈퇴
+	@RequestMapping(value="/mypage/deleteAccount" , method=RequestMethod.GET)
+	public String deleteAccount() {
+		
+		return "mypage/deleteAccount"; 
+	}
+	
+	@RequestMapping(value="/mypage/deleteAccount" , method=RequestMethod.POST)
+	@ResponseBody
+	public String deleteAccount(@RequestBody String password,HttpSession session) {
+		System.out.println("data옴");
+		String email = (String)session.getAttribute("myEmail");
+		System.out.println("email:"+email+"/비번:"+password);
+		String check = joinService.userCheck(email, password);
+		
+		//비밀번호가 일치할경우
+		if(check.equals("0")) {
+			//회원탈퇴
+			mypageService.deleteAccout(email);
+			session.invalidate();
+			return check;
+		}else {
+			return check;
+		}
+	}
+	
+	@RequestMapping(value="/mypage/deleteAccountComplite" , method=RequestMethod.GET)
+	public String deleteAccountComplite() {
+		
+		return "mypage/deleteAccountComplite"; 
+	}
+	
+	//마이페이지 main
+	@RequestMapping(value="/mypage/mypageMain" , method=RequestMethod.GET)
+	public String mypageMain() {
+		
+		return "mypage/mypageMain"; 
+	}
+	
+	//나의 1:1문의 게시판
+	@RequestMapping(value="/mypage/myQnaList" , method=RequestMethod.GET)
+	public String myQnaList() {
+		
+		return "mypage/myQnaList"; 
+	}
+	
 }

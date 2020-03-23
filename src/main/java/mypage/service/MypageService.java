@@ -7,4 +7,5 @@ import join.member.Member;
 public interface MypageService {
 	void updateInfo(Member member);
 	void updatePwd(HashMap map);
+	void deleteAccout(String email);
 }

@@ -40,7 +40,7 @@ $( document ).ready( function() {
 		var password = $("#password").val();
 		console.log("비밀번호:"+password);
 		$.ajax({
-			url : "contextPath/mypage/checkPwd",
+			url : contextPath+"/mypage/checkPwd",
 			type : "POST",
 			data : password,
 			contentType : "application/String",
@@ -48,7 +48,7 @@ $( document ).ready( function() {
 			success : function(data){
 				console.log("data :" + data);
 				if(data == 0){
-					location.href="contextPath/mypage/updateInfo";
+					location.href=contextPath+"/mypage/updateInfo";
 				}else if(data == 1){
 					alert("가입된 회원정보가 없습니다.")
 				}else{
@@ -70,7 +70,7 @@ $( document ).ready( function() {
 					}
 		console.log("updateData:"+updateData);
 		$.ajax({
-			url : "contextPath/mypage/updatePwd",
+			url : contextPath+"/mypage/updatePwd",
 			type : "POST",
 			data : JSON.stringify(updateData),
 			contentType : "application/json",
@@ -78,7 +78,7 @@ $( document ).ready( function() {
 			success : function(data){
 				console.log("check :"+data)
 				if(data ==0){
-					location.href="contextPath/mypage/updatePwdComplite";
+					location.href=contextPath+"/mypage/updatePwdComplite";
 				}else{
 					alert("현재 비밀번호를 다시 확인해주세요.")
 				}
@@ -86,5 +86,33 @@ $( document ).ready( function() {
 				
 		})
 	})
+	
+	//회원 탈퇴
+	$("#deleteAccount").click(function(){
+		console.log("회원탈퇴")
+		var password = $("#password").val();
+		console.log(password)
+		$.ajax({
+			url : contextPath+"/mypage/deleteAccount",
+			type : "POST",
+			data : password,
+			contentType : "application/String",
+			dataType : "text",
+			success : function(data){
+				console.log("check :"+data)
+				if(data ==0){
+					location.href=contextPath+"/mypage/deleteAccountComplite";
+				}else{
+					alert("현재 비밀번호를 다시 확인해주세요.")
+				}
+			}
+		})
+	})
+	
+	//컨텐츠 링크 연결
+	function insertContent(){
+		var insert = 
+		$("#content").html();
+	}
 	
 })

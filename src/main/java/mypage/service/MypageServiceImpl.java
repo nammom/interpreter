@@ -35,5 +35,11 @@ public class MypageServiceImpl implements MypageService {
 		joinDao.updatePwd(map);
 		
 	}
+	
+	//회원 탈퇴
+	@Override
+	public void deleteAccout(String email) {
+		joinDao.deleteAccout(email);		
+	}
 
 }

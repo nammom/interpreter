@@ -99,7 +99,7 @@ var ranNum ="";
 	$('#emailCheck').click(function(){
 		var email = $('#email').val();
 		$.ajax({
-			url : "contextPath/join/emailCheck",
+			url : contextPath+"/join/emailCheck",
 			type : "POST",
 			data : email,
 			contentType : "application/String",
@@ -121,7 +121,7 @@ var ranNum ="";
 		var userCode = $('#userCode').val();
 		console.log("닉네임 중복확인 :"+userCode);
 		$.ajax({
-			url : "contextPath/join/usercodeCheck",
+			url : contextPath+"/join/usercodeCheck",
 			type : "POST",
 			data : userCode,
 			contentType : "application/String",
@@ -214,7 +214,7 @@ var ranNum ="";
 			var phone = $("#phone").val();
 			console.log("phone:"+phone);
 			$.ajax({
-				url : "contextPath/join/send",
+				url : contextPath+"/join/send",
 				type : "POST",
 				data : phone,
 				contentType : "application/String",
@@ -231,7 +231,7 @@ var ranNum ="";
 		//사용자가 입력한 인증번호
 		var sendCheck = $("#sendCheck").val();
 		$.ajax({
-			url : "contextPath/join/CheckRan",
+			url : contextPath+"/join/CheckRan",
 			type : "POST",
 			data : sendCheck,
 			contentType : "application/String",
