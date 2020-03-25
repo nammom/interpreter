@@ -40,7 +40,7 @@
 		<insert id="insertAdApp" parameterType="AdverAppVo">
 		 	INSERT INTO ADAPPLICATION
             VALUES 
-            (ADAPP_SEQ.nextval, #{userCode}, #{enterprise}, #{image},
-            #{adcategory}, #{adDate}, #{link}, #{title}, #{content}, #{phone}, #{email}, sysdate)
+            (PAGENO_SEQ.nextval, ADAPP_SEQ.nextval, #{userCode}, #{enterprise}, #{image},
+            #{adcategory}, #{adDate}, #{link}, #{title}, #{content}, #{phone}, #{email}, default)
 		</insert>	
 </mapper>

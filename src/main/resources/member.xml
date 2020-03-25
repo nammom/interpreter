@@ -65,7 +65,8 @@
 				<value>classpath:mybatis/sqlmap-matching.xml</value>
 				<value>classpath:mybatis/sqlmap-myBlogErEe.xml</value>
 				<value>classpath:mybatis/sqlmap-ranking.xml	</value>	
-				<value>classpath:mybatis/sqlmap-adver.xml	</value>			
+				<value>classpath:mybatis/sqlmap-adver.xml	</value>
+				<value>classpath:mybatis/sqlmap-myPageErEe.xml</value>			
 			</list>
 		</property>
 	</bean>
@@ -108,6 +109,15 @@
 	
 	<bean id="myBlogErEeService" class="myBlogErEe.spring.MyBlogErEeServiceImpl">
 		<constructor-arg ref="myBlogErEeDao" />
+	</bean>
+	
+	<!-- 마이페이지_ 사장님, 알바생 소개서 작성 관리-->
+		<bean id="myPageErEeDao" class="myPageErEe.spring.MyPageErEeDaoImpl">
+		<constructor-arg ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean id="myPageErEeService" class="myPageErEe.spring.MyPageErEeServiceImpl">
+		<constructor-arg ref="myPageErEeDao" />
 	</bean>
 	
 	<!--랭킹 -->

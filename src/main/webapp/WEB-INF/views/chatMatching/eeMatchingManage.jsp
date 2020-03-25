@@ -82,7 +82,6 @@ input:checked + label span {
 </div><br/><br/>
 <div>
 	<ul class = "content">
-
 	</ul>
 </div>	
 	<script>

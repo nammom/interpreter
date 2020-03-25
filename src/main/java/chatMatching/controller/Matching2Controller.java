@@ -41,25 +41,21 @@ public class Matching2Controller
     //EchoHandler 의존주입
     
     @RequestMapping(value = {"/erMatchingManage"})
-    public String erMatchingManage(HttpServletRequest request, Model model) {
-    	
-		/*
-		 * HttpSession session = request.getSession(); String myuserCode =
-		 * (String)session.getAttribute("myuserCode");
-		 * System.out.println("사장님 매칭가져오기 메서드myuserCode:" + myuserCode);
-		 * 
-		 * List<MatchingVo> erMatchingVoList =
-		 * matchingService.getErMatching(myuserCode);
-		 * model.addAttribute("erMatchingVoList", erMatchingVoList);//결과 model에 담음
-		 */
+    public String erMatchingManage() {
+
         return "chatMatching/erMatchingManage";
+    }
+    
+    @RequestMapping(value = {"/eeMatchingManage"})
+    public String eeMatchingManage() {
+    	
+        return "chatMatching/eeMatchingManage";
     }
     
     @ResponseBody
     @RequestMapping(value = "/newerList", produces = "text/json; charset=utf-8")
-    public String neweeList(HttpServletRequest request, Model model) {
-    	
-    	HttpSession session = request.getSession();
+    public String neweeList(HttpSession session, Model model) {
+
     	String myuserCode = (String)session.getAttribute("myuserCode");
 //		System.out.println("사장님 매칭가져오기 메서드myuserCode:" + myuserCode);
 
@@ -91,29 +87,12 @@ public class Matching2Controller
 		return resultjson.toJSONString();
     }
     
-  
-    @RequestMapping(value = {"/eeMatchingManage"})
-    public String eeMatchingManage(HttpServletRequest request, Model model) {
-    	
-		/*
-		 * HttpSession session = request.getSession(); String myuserCode =
-		 * (String)session.getAttribute("myuserCode");
-		 * System.out.println("알바생 매칭가져오기 메서드myuserCode:" + myuserCode);
-		 * 
-		 * List<MatchingVo> eeMatchingVoList =
-		 * matchingService.getEeMatching(myuserCode);
-		 * model.addAttribute("eeMatchingVoList", eeMatchingVoList);//결과 model에 담음
-		 * String smsCheck = chatService.selectSmsCheck(myuserCode);
-		 * model.addAttribute("smsCheck", smsCheck);//결과 model에 담음
-		 */    	
-        return "chatMatching/eeMatchingManage";
-    }
+
     
     @ResponseBody
     @RequestMapping(value = "/neweeList" ,produces = "text/json; charset=utf-8")
-    public String newerList(HttpServletRequest request, Model model) {
-    	
-    	HttpSession session = request.getSession();
+    public String newerList(HttpSession session, Model model) {
+
     	String myuserCode = (String)session.getAttribute("myuserCode");
 //		System.out.println("사장님 매칭가져오기 메서드myuserCode:" + myuserCode);
 		List<MatchingVo> eeMatchingVoList = matchingService.getEeMatching(myuserCode);
@@ -150,8 +129,7 @@ public class Matching2Controller
    
     @ResponseBody
     @RequestMapping(value = {"/cancelMatching"})
-    public void cancelMatching(@RequestBody HashMap<String, Object> map,
-    		HttpServletRequest request) {
+    public void cancelMatching(@RequestBody HashMap<String, Object> map) {
  
     	String matchingCode = (String)map.get("matchingCode");
     	System.out.println("매칭코드 삭제"+matchingCode);
@@ -163,7 +141,7 @@ public class Matching2Controller
     public String reivew(@PathVariable String category, 
     		@RequestParam(value="targetCode") String targetCode,
     		@RequestParam(value="matchingCode", required = false) String matchingCode,
-    		HttpServletRequest request, Model model) {
+    		Model model) {
     	
     	System.out.println("targetCode" + targetCode);
     	
@@ -179,7 +157,7 @@ public class Matching2Controller
     
     @ResponseBody
     @RequestMapping(value = {"/cf"})
-    public void reivew(@RequestBody HashMap<String, Object> map, HttpServletRequest request) {
+    public void reivew(@RequestBody HashMap<String, Object> map) {
     	
     	System.out.println("인증완료");
     	String targetCode = (String)map.get("targetCode");
@@ -190,11 +168,12 @@ public class Matching2Controller
     }
     
     @RequestMapping(value = {"/reviewSuccess"})
-    public String reviewSuccess(@RequestParam(value="category") String category,@RequestParam(value="matchingCode") String matchingCode, @RequestParam(value="targetCode") String targetCode,
+    public String reviewSuccess(@RequestParam(value="category") String category,
+    		@RequestParam(value="matchingCode") String matchingCode, 
+    		@RequestParam(value="targetCode") String targetCode,
     		@RequestParam(value="star") int star,@RequestParam(value="content") String content,
-    		HttpServletRequest request) {
-    	
-    	HttpSession session = request.getSession();
+    		HttpSession session) {
+
     	String myuserCode = (String)session.getAttribute("myuserCode");
     	
     	matchingService.makeReview(category,matchingCode,myuserCode,targetCode,star,content);
@@ -203,8 +182,8 @@ public class Matching2Controller
     
     @ResponseBody
     @RequestMapping(value = {"/updateSms"})
-    public void updateSms(@RequestBody HashMap<String, Object> map, HttpServletRequest request ) {
-    	HttpSession session = request.getSession();   	
+    public void updateSms(@RequestBody HashMap<String, Object> map, HttpSession session) {
+   	
     	String myuserCode = (String)session.getAttribute("myuserCode");
     	String employeeCode = (String)session.getAttribute("employeeCode");
     	    	

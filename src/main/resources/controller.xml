@@ -39,6 +39,12 @@
 			<property name="myBlogErEeService" ref="myBlogErEeService" />
 		</bean>
 		
+		<!-- 마이페이지_ 사장님, 알바생 소개서 작성 관리-->
+		<bean id="myPageErEeController" class="myPageErEe.controller.MyPageErEeController">
+			<property name="myPageErEeService" ref="myPageErEeService" />
+			<property name="myBlogErEeService" ref="myBlogErEeService" />
+		</bean>
+		
 		<!--랭킹 -->
 		<bean id="rankingController" class="ranking.controller.RankingController">
 			<property name="rankingService" ref="rankingService" />
