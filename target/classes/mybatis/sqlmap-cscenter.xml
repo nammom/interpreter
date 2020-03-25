@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CsCenterDao">
+
+	<select id="noticeList" resultType="NoticeVo">
+		SELECT * FROM NOTICE
+		ORDER BY
+		"NO"
+	</select>
+
+
+	<select id="noticeselect" parameterType="String"
+		resultType="NoticeVo">
+		SELECT * FROM
+		NOTICE WHERE "NO" = #{NO}
+	</select>
+
+
+	<update id="updateCount" parameterType="String">
+		UPDATE NOTICE SET "HIT" =
+		"HIT" + 1 WHERE "NO" = #{seq}
+	</update>
+	
+	
+	<select id="currval" resultType="Integer">
+		SELECT QNA_SEQ.CURRVAL FROM DUAL
+	</select>
+	
+	
+	
+	<insert id="fileNameinsert" parameterType="HashMap">
+		INSERT INTO QFILE(NO,FILEPATH)
+		VALUES
+		(#{qno},#{fileName})
+
+	</insert>
+
+	<insert id="qnainsert" parameterType="QnaRequestVo">
+		INSERT INTO QNA
+		("NO",
+		"WRITERCODE", "REGDATE", "INQUIRYTYPE", "TITLE", "CONTENT")
+		VALUES
+		('Q'||QNA_SEQ.nextval,
+		#{writercode},DEFAULT, #{inquirytype},#{title},
+		#{content})
+
+	</insert>
+
+	<insert id="complaininsert" parameterType="QnaRequestVo">
+		INSERT INTO QNA
+		("NO",
+		"WRITERCODE", "REGDATE", "INQUIRYTYPE", "TITLE", "CONTENT",
+		"COMPLAIN")
+		VALUES
+		('Q'||QNA_SEQ.nextval,
+		#{writercode},DEFAULT,
+		#{inquirytype},#{title}, #{content},#{complain})
+
+	</insert>
+
+
+	<select id="usercodeCheck" parameterType="String"
+		resultType="MemberVo">
+		select * from "USER" where USERCODE = #{userCode}
+	</select>
+
+
+
+
+</mapper>

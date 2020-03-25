@@ -12,7 +12,7 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-			classpath:mvc.xml
+<!-- 			classpath:mvc.xml -->
 		</param-value>
   </context-param>
   <listener>
@@ -26,7 +26,9 @@
       <param-value>
 				classpath:member.xml
 				classpath:controller.xml
-				classpath:mvc.xml
+				classpath:healthy/healthy-controller.xml
+				classpath:healthy/healthy-member.xml
+			classpath:mvc.xml
 			</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>

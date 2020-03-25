@@ -40,8 +40,8 @@
 			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl"
 			value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="user" value="hi" />
-		<property name="password" value="hi" />
+		<property name="user" value="jsptest" />
+		<property name="password" value="1234" />
 		<property name="maxPoolSize" value="100" />
 		<property name="maxIdleTime" value="600" />
 		<property name="idleConnectionTestPeriod" value="300" />
@@ -65,7 +65,15 @@
 				<value>classpath:mybatis/sqlmap-matching.xml</value>
 				<value>classpath:mybatis/sqlmap-myBlogErEe.xml</value>
 				<value>classpath:mybatis/sqlmap-ranking.xml	</value>	
-				<value>classpath:mybatis/sqlmap-adver.xml	</value>			
+				<value>classpath:mybatis/sqlmap-adver.xml	</value>	
+
+				<value>classpath:mybatis/sqlmap-cscenter.xml</value>
+				<value>classpath:mybatis/sqlmap-freeboard.xml</value>
+				<value>classpath:mybatis/sqlmap-map.xml</value>
+				<value>classpath:mybatis/sqlmap-popatc.xml</value>
+				
+
+		
 			</list>
 		</property>
 	</bean>
@@ -128,9 +136,6 @@
 		<constructor-arg ref="adverDao" />
 	</bean>
 	
-	<bean id="multipartResolver"
-        class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
-            
 	<context:component-scan base-package="chatMatching.spring" />
 
 </beans>
