@@ -20,6 +20,19 @@
 		<typeAlias alias="RankingVo" type="ranking.vo.RankingVo" />
 		<typeAlias alias="AdverVo" type="advertisement.vo.AdverVo" />
 		<typeAlias alias="AdverAppVo" type="advertisement.vo.AdverAppVo" />
+		<!--여울-->
+		<typeAlias alias="NoticeVo" type="cscenter.vo.NoticeVo" />
+		<typeAlias alias="QnaRequestVo" type="cscenter.vo.QnaRequestVo" />
+		<typeAlias alias="MemberVo" type="cscenter.vo.MemberVo" />
+
+		<typeAlias alias="FreeBoardVo" type="freeboard.vo.FreeBoardVo" />
+		<typeAlias alias="PageReady" type="freeboard.vo.PageReady" />
+		<typeAlias alias="Search" type="freeboard.vo.Search" />
+
+		<typeAlias alias="MapDto" type="map.vo.MapDto" />
+		<typeAlias alias="ArticlesDto" type="map.vo.ArticlesDto" />
+		<typeAlias alias="CommentsVo" type="freeboard.vo.CommentsVo" />
+		<!-- -->
 	</typeAliases>
 	
 </configuration>

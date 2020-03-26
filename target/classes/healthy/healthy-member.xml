@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation=
+		"http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+		
+	
+	<bean id="csCenterDao" class="cscenter.spring.CsCenterMybatis">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+
+	<bean id="freeBoardDao" class="freeboard.spring.FreeBoardMybatis">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	
+	</bean>
+
+	<bean id="mapDao" class="map.spring.MapDao">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+		<property name="mapDto" ref="mapDto"></property>
+		<property name="articlesDto" ref="articlesDto"></property>
+	</bean>
+
+
+	
+	<bean id="noticeVo" class="cscenter.vo.NoticeVo"/>
+	<bean id="qnaRequestVo" class="cscenter.vo.QnaRequestVo"/>
+	<bean id="memberVo" class="cscenter.vo.MemberVo"/>
+
+	<bean id="csCenterService" class="cscenter.spring.CsCenterServiceImpl">
+		<property name="csCenterDao" ref="csCenterDao"/>
+	</bean>
+	
+	
+	<bean id="freeBoardVo" class="freeboard.vo.FreeBoardVo"/>
+	<bean id="pageReady" class="freeboard.vo.PageReady"/>
+	
+	
+	<bean id="freeBoardService" class="freeboard.spring.FreeBoardServiceImpl">
+		<property name="freeBoardDao" ref="freeBoardDao"/>
+	</bean>
+
+	<bean id="mapDto" class="map.vo.MapDto"/>
+	<bean id="articlesDto" class="map.vo.ArticlesDto"/>
+	<bean id="CommentsVo" class="freeboard.vo.CommentsVo"/>
+
+	<bean id="illMapService" class="map.spring.IllMapServiceImpl">
+		<property name="mapDao" ref="mapDao"/>
+	</bean>
+
+	<bean id="popAtcDao" class="popularArticle.spring.PopAtcMybatis">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+
+	<bean id="popAtcService" class="popularArticle.spring.PopAtcServiceImpl">
+		<property name="popAtcDao" ref="popAtcDao"/>
+	</bean>
+
+</beans>

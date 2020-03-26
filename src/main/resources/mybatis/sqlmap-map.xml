@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MapDao">
+
+	<select id="selectGuinAll" resultType="mapDto">
+		select ADDRESS,LAT,LNG from EB
+	</select>
+	
+	<select id="selectGuinArticles" parameterType="HashMap" resultType="ArticlesDto">
+		 select "EBCODE","TITLE","WRITERCODE",to_char("START", 'YYYY/MM/DD') as "START", to_char("END", 'YYYY/MM/DD') as "END" from EB where ("LAT" between #{swLat} and #{neLat}) AND ("LNG" between #{swLng} and #{neLng})order by "START" asc
+	</select>
+	
+	<select id="selectGujicAll" resultType="mapDto">
+		select ADDRESS,LAT,LNG from GB
+	</select>
+	
+	<select id="selectGujicArticles" parameterType="HashMap" resultType="ArticlesDto">
+		 select "WBCODE","TITLE","WRITERCODE",to_char("START", 'YYYY/MM/DD') as "START", to_char("END", 'YYYY/MM/DD') as "END" from GB where ("LAT" between #{swLat} and #{neLat}) AND ("LNG" between #{swLng} and #{neLng})order by "START" asc
+	</select>
+	
+	
+	
+</mapper>

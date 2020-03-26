@@ -39,8 +39,8 @@ public class ChatListController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/newChatList", produces = "text/json; charset=utf-8")
-	public String home(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String home(HttpSession session) {
+		
 		System.out.println("newChatList ajax");
 		String myuserCode = (String)session.getAttribute("myuserCode");
 		List<ChatVo> allChatVoList = chatService.getAllChatList(myuserCode);//채팅목록을 가져오는 서비스
@@ -63,11 +63,7 @@ public class ChatListController {
 		return json.toJSONString();
 	}
 	@RequestMapping(value = "/chatList")
-	public String home(
-			HttpServletRequest request,// HttpServletResponse response,
-			Locale locale, Model model) {
-		//!! 구현해야할것 ! 나중에는 세션에서 id 꺼냄
-		HttpSession session = request.getSession();
+	public String chatList(HttpSession session, Locale locale, Model model) {
 		
 		 if(session.getAttribute("myuserCode") == null) {
 		 System.out.println("로그인회원아님"); return "login"; }
@@ -89,12 +85,9 @@ public class ChatListController {
 	
 	 @RequestMapping(value = {"/delete/{fromCode}"})
 	    public ModelAndView oneChatList(@PathVariable String fromCode,
-	    		HttpServletRequest request, HttpServletResponse response, 
+	    		HttpSession session, 
 	    		Locale locale, final Model model) {
-	    	
-	    	
-	    	HttpSession session = request.getSession();
-	    	
+
 	    	String myuserCode = (String)session.getAttribute("myuserCode");
 	      	System.out.println(fromCode);
 

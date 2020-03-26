@@ -22,9 +22,8 @@ public class mainController{
 
     @RequestMapping(value = {"/main"})
     public String oneChatList(@RequestParam(value="id", required = false) String myuserCode,
-    		HttpServletRequest request, final Model model) {
-    	
-    	HttpSession session = request.getSession();
+    		HttpSession session, final Model model) {
+
     	session.setAttribute("myuserCode", myuserCode);
   
     	model.addAttribute("myuserCode", myuserCode);//결과 model에 담음

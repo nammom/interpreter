@@ -38,7 +38,7 @@
 	var employeeCode = $("#anotherCode").val();
 	
 	$(document).ready(function(){
-		wsocket = new WebSocket("ws://192.168.30.72:8080<c:url value='/echo'/>");
+		wsocket = new WebSocket("ws://localhost:8080<c:url value='/echo'/>");
 		wsocket.onmessage = onMessage;
 		wsocket.onclose = onClose;
 		wsocket.onopen = onOpen;
@@ -78,7 +78,7 @@
 	};
 	
 	function onClose(e){
-		wsocket = new WebSocket("ws://192.168.30.72:8080<c:url value='/echo'/>");
+		wsocket = new WebSocket("ws://localhost:8080<c:url value='/echo'/>");
 		wsocket.onmessage = onMessage;
 		wsocket.onclose = onClose;
 		wsocket.onopen = onOpen;
@@ -86,14 +86,15 @@
 	};
 	
 	function openChildMatching(){		
-		var url = "/interpreter/matching/" + "${employeeCode}";
+		var url = "${pageContext.request.contextPath}/matching/${employeeCode}";
+		alert(url);
         var name = "matching";
         var option = "width = 600, height = 300, top = 100, left = 200, location = no"
         window.open(url, name, option);
 	};
 	
 	function openRoadMap (){
-		var url = "/interpreter/roadMap";
+		var url = "${pageContext.request.contextPath}/roadMap";
         var name = "readMap";
         var option = "width = 800, height = 600, top = 100, left = 200, location = no"
         window.open(url, name, option);

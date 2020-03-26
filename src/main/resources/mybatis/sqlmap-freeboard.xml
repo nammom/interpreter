@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="freeBoardDao">
+
+	<select id="freelist" resultType="FreeBoardVo">
+		SELECT * FROM FREEBOARD
+		ORDER BY
+		REGDATE desc
+	</select>
+
+
+	<select id="freeselect" parameterType="String"
+		resultType="FreeBoardVo">
+		SELECT FREECODE, WRITERCODE, TITLE, CONTENT,
+		to_char(REGDATE, 'YYYY/MM/DD') as REGDATE,
+		HIT FROM FREEBOARD WHERE
+		FREECODE = #{freecode}
+	</select>
+
+	<update id="freeupdateCount" parameterType="String">
+		UPDATE FREEBOARD SET
+		HIT
+		= HIT + 1 WHERE FREECODE = #{freecode}
+	</update>
+
+
+	<insert id="freeinsert" parameterType="FreeBoardVo">
+		INSERT INTO FREEBOARD
+		(NUM,FREECODE, WRITERCODE, TITLE, CONTENT, REGDATE, HIT)
+		VALUES
+		(FREE_SEQ.nextval,'F'||FREE_SEQ.nextval,#{writercode},#{title},#{content},DEFAULT,DEFAULT)
+
+	</insert>
+
+	<update id="freeupdate" parameterType="FreeBoardVo">
+		UPDATE FREEBOARD SET TITLE
+		=
+		#{title},
+		CONTENT = #{content}
+		WHERE FREECODE = #{freecode}
+	</update>
+
+	<delete id="freedelete" parameterType="String">
+		DELETE FROM FREEBOARD
+		WHERE
+		FREECODE = #{freecode}
+	</delete>
+
+
+	<select id="listPage" resultType="FreeBoardVo"
+		parameterType="PageReady">
+		select FREECODE, WRITERCODE, TITLE, CONTENT, REGDATE,
+		HIT
+		from (
+		select NUM, FREECODE, WRITERCODE, TITLE, CONTENT, REGDATE,
+		HIT,
+		row_number() over(order by NUM desc) as rNum
+		from FREEBOARD
+		)
+		FREEBOARD
+		where rNum between #{rowStart} and #{rowEnd}
+		order by NUM desc
+	</select>
+
+
+	<select id="listCount" resultType="int">
+		<![CDATA[
+		 select count(NUM) from FREEBOARD where NUM > 0
+		]]>
+		<!-- 전체선택을 하지 않은 이유는 글이 많아졌을때 특정 컬럼을 기준으로 가져와야 속도가 빠르기 때문 -->
+	</select>
+
+
+	<select id="listSearch" resultType="FreeBoardVo"
+		parameterType="Search">
+		SELECT FREECODE, WRITERCODE, TITLE, CONTENT, to_char(REGDATE,
+		'YYYY/MM/DD') as REGDATE,
+		HIT
+		from (
+		select
+		NUM, FREECODE, WRITERCODE,
+		TITLE, CONTENT, REGDATE,
+		HIT,
+		row_number()
+		over(order by NUM desc) as
+		rNum
+		from FREEBOARD <![CDATA[
+		   where NUM > 0
+		]]>
+		<include refid="search"></include>
+		)
+		FREEBOARD
+		where rNum between #{rowStart} and #{rowEnd}
+		order by NUM
+		desc
+	</select>
+
+
+	<select id="countSearch" resultType="int">
+		select count(NUM)
+		from FREEBOARD
+		<![CDATA[
+		   where NUM > 0
+		]]>
+		<include refid="search"></include>
+	</select>
+
+
+
+
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">and TITLE like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">and CONTENT like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">and WRITERCODE like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">and (TITLE like '%' || #{keyword} || '%') or (CONTENT
+				like '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+
+	<!-- 댓글 -->
+	<insert id="commentsInsert"
+		parameterType="CommentsVo">
+		insert into COMMENTS values
+		(COMMENTS_SEQ.nextval, #{userCode}, #{articleCode}, #{comments},sysdate)
+	</insert>
+
+	<select id="commentsList" resultType="CommentsVo" parameterType="String">
+    	select NUM, USERCODE, COMMENTS, REGISTDATE from COMMENTS where ARTICLECODE = #{articleCode}
+    </select>
+
+	 <update id="commentsUpdate" parameterType="CommentsVo">
+    	update COMMENTS set COMMENTS = #{comments}, REGISTDATE = SYSDATE where NUM = #{num}
+    </update>
+	
+	<delete id="commentsDelete" parameterType="CommentsVo">
+    	delete from COMMENTS where NUM = #{num} 
+    </delete>
+
+
+</mapper>

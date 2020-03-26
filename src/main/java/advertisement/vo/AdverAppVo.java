@@ -1,6 +1,7 @@
 package advertisement.vo;
 
 public class AdverAppVo {
+	int pageNo;
 	String adAppNo;
 	String userCode;
 	String enterprise;
@@ -14,6 +15,13 @@ public class AdverAppVo {
 	String email;
 	String regDate;
 	
+	
+	public int getPageNo() {
+		return pageNo;
+	}
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
+	}
 	public String getAdAppNo() {
 		return adAppNo;
 	}

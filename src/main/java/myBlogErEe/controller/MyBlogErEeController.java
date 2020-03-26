@@ -35,11 +35,8 @@ public class MyBlogErEeController {
 
 	@RequestMapping(value = "/myBlogEr")
 	public String home(
-			HttpServletRequest request,// HttpServletResponse response,
-			Locale locale, Model model) {
-		//!! 구현해야할것 ! 나중에는 세션에서 id 꺼냄
-		HttpSession session = request.getSession();
-		
+			HttpSession session, Model model) {
+
 		if(session.getAttribute("myuserCode") == null) {
 		System.out.println("로그인회원아님"); return "login"; }
 		 
@@ -59,10 +56,8 @@ public class MyBlogErEeController {
 	}
 	
 	@RequestMapping(value = "/myBlogEe")
-	public String myBlogEe(HttpServletRequest request,Model model) {
-		//!! 구현해야할것 ! 나중에는 세션에서 id 꺼냄
-		HttpSession session = request.getSession();
-		
+	public String myBlogEe(HttpSession session,Model model) {
+
 		if(session.getAttribute("myuserCode") == null) {
 		System.out.println("로그인회원아님"); return "login"; }
 
@@ -78,8 +73,7 @@ public class MyBlogErEeController {
 		}
 		review = myBlogErEeService.getEeReview(myuserCode);
 		int avgStar = myBlogErEeService.getEeStar(myuserCode);
-		
-		//System.out.println(eeIntro.getContents());
+
 		System.out.println(avgStar);
 		
 		model.addAttribute("myuserCode", myuserCode);

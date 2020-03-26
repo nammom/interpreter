@@ -35,17 +35,10 @@ public class MatchingController
    
     @RequestMapping(value = {"/matching/{employeeCode}"})
     public String viewMatching(@PathVariable String employeeCode,
-    		HttpServletRequest request, final Model model) {
-    	//내코드 toCode는 임시로 :"U1"으로 함
-    	
-    	HttpSession session = request.getSession();
+    		HttpSession session, final Model model) {
 
     	String myuserCode = (String)session.getAttribute("myuserCode");
-	
-		/*
-		 * System.out.println("사장님게시글 메서드 employeeCode : " + employeeCode);
-		 * System.out.println("myuserCode:" + myuserCode);
-		 */
+
 		session.setAttribute("employeeCode", employeeCode);
 		session.setAttribute("fromCode", employeeCode);
  	
@@ -58,10 +51,9 @@ public class MatchingController
     
     @ResponseBody
     @RequestMapping(value = {"/makeMatching"})
-    public void makeMatching(@RequestBody HashMap<String, Object> map, HttpServletRequest request ) {
+    public void makeMatching(@RequestBody HashMap<String, Object> map, HttpSession session) {
     	String groupId = "null";
-    	HttpSession session = request.getSession();
-    	
+
     	String myuserCode = (String)session.getAttribute("myuserCode");
     	String employeeCode = (String)session.getAttribute("employeeCode");
     	    	
@@ -80,34 +72,7 @@ public class MatchingController
        		groupId = "null";
        	}
     	chatService.insertMatching(myuserCode,employeeCode,ebCode,groupId);//매칭테이블에 값넣는 서비스 
-    	//CalendarAddDto cal = chatService.getOneErMatching(ebCode);
-    	//String scheduleCategory = "매칭";
-    	//String backColor = "";
-    	//String fontColor = "";
-    	//String allDayCheck = "";
-    	
-    	//cal.setScheduleCategory(scheduleCategory);
-    	//cal.setBackColor(backColor);
-    	//cal.setFontColor(fontColor);
-    	//cal.setAllDayCheck(allDayCheck);
-    	
-    	//calendarService.addService(cal);
     }
-	
 
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value = {"/matching/{employeeCode}"}) public String
-	 * sendMatching(@RequestBody HashMap<String, Object> map, HttpServletRequest
-	 * request) {
-	 * 
-	 * HttpSession session = request.getSession(); String employeeCode =
-	 * (String)session.getAttribute("employeeCode");
-	 * session.setAttribute("fromCode", employeeCode); String ebCode =
-	 * (String)map.get("ebCode"); String ebURL = "게시글 경로 " + ebCode;
-	 * echo.sendMatching(ebURL); }
-	 */
-    
     
 }

@@ -37,11 +37,8 @@ public class ChatController
     
     @RequestMapping(value = {"/chat/{fromCode}"})
     public String oneChatList(@PathVariable String fromCode,
-    		HttpServletRequest request, HttpServletResponse response, 
+    		HttpSession session, 
     		Locale locale, final Model model) {
-    	//내코드 toCode는 임시로 :"U1"으로 함
-    	
-    	HttpSession session = request.getSession();
 
     	if(session.getAttribute("myuserCode") == null) {
     		System.out.println("로그인회원아님");

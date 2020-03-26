@@ -45,8 +45,8 @@ public class AdverController {
 	
 	@RequestMapping(value = "/adApp")
 	public String adApp(@RequestParam(value="category") String category, 
-			HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
+			HttpSession session, Model model) {
+		
     	String myuserCode = (String)session.getAttribute("myuserCode");
     	
 		if(category == null || myuserCode == null) {
@@ -67,10 +67,10 @@ public class AdverController {
 		String category = adverAppVo.getAdcategory();
 		int point = adverService.getPoint(userCode);
 
-		if((!category.equals(company)) || point < 300) {
+		if(point < 300) {
 			return "redirect:adAppFail";
 		}
-		if((!category.equals(company)) && adverService.getPoint(userCode) >= 300) {
+		if(point >= 300) {
 			adverService.minusPoint(userCode);
 		}
 		
@@ -116,7 +116,7 @@ public class AdverController {
 	    logger.info("saveName: {}",saveName);
 
 	    // 저장할 File 객체를 생성(껍데기 파일)
-	    File saveFile = new File("C:\\Users\\user1\\Desktop\\companyLogo",saveName); // 저장할 폴더 이름, 저장할 파일 이름
+	    File saveFile = new File("D:\\companyLogo",saveName); // 저장할 폴더 이름, 저장할 파일 이름
 	    System.out.println("파일저장");
 
 	    try {
